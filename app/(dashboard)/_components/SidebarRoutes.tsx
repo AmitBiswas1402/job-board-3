@@ -1,65 +1,70 @@
-"use client"
+"use client";
 
-import { BookMarked, Compass, Home, List, User } from "lucide-react"
-import { usePathname } from "next/navigation"
-import { useRouter } from "next/navigation"
-import SidebarRouteItem from "./SidebarRouteItem"
+import { BookMarked, Compass, Home, List, User } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import SidebarRouteItem from "./SidebarRouteItem";
 
 const adminRoutes = [
   {
     icon: List,
     label: "Jobs",
-    href: "/admin/jobs"
+    href: "/admin/jobs",
   },
   {
     icon: List,
     label: "Companies",
-    href: "/admin/companies"
+    href: "/admin/companies",
   },
   {
     icon: Compass,
     label: "Analytics",
-    href: "/admin/analytics"
+    href: "/admin/analytics",
   },
-]
+];
 
 const guestRoutes = [
   {
     icon: Home,
     label: "Home",
-    href: "/"
+    href: "/",
   },
   {
     icon: Compass,
     label: "Search",
-    href: "/search"
+    href: "/search",
   },
   {
     icon: User,
     label: "Profile",
-    href: "/user"
+    href: "/user",
   },
   {
     icon: BookMarked,
     label: "Saved Jobs",
-    href: "/savedJobs"
+    href: "/savedJobs",
   },
-]
+];
 
 const SidebarRoutes = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const isAdminPage = pathname?.startsWith("/admin")
+  const isAdminPage = pathname?.startsWith("/admin");
 
   const routes = isAdminPage ? adminRoutes : guestRoutes;
 
   return (
-    <div>
+    <div className="flex flex-col w-full">
       {routes.map((route) => (
-        <SidebarRouteItem key={route.href} />
+        <SidebarRouteItem
+          key={route.href}
+          icon={route.icon}
+          label={route.label}
+          href={route.href}
+        />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default SidebarRoutes
+export default SidebarRoutes;
