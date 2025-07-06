@@ -13,17 +13,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   title: z
     .string()
-    .min(2, { message: "Username must be at least 2 characters long" }),
+    .min(2, { message: "Job title must be at least 2 characters long" }),
 });
 
 const CreatePage = () => {
+  const router = useRouter(); 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,11 +33,20 @@ const CreatePage = () => {
     },
   });
 
-  const {isSubmitting, isValid} = form.formState
+  const { isSubmitting, isValid } = form.formState;
 
-  async function onSubmit (values: z.infer<typeof formSchema>) {
-    console.log(values);
-  };
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await axios.post("/api/jobs", values);
+      console.log("Job created:", response.data);
+      // router.push("/dashboard"); 
+    } catch (error: any) {
+      console.error(
+        "Job creation error:",
+        error?.response?.data || error.message
+      );
+    }
+  }
 
   return (
     <div className="max-w-5xl flex md:items-center md:justify-center h-full p-6">
@@ -44,7 +55,7 @@ const CreatePage = () => {
         <p className="text-sm text-neutral-500">
           What would you like to name the job?
         </p>
-        {/* form */}
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
