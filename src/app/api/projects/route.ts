@@ -21,9 +21,9 @@ export async function POST(req: Request) {
       title: body?.title ?? "",
       desc: body?.desc ?? "",
       prompt: body?.prompt ?? "",
-      duration: Number(body?.duration),
-      aspectRatio: body?.aspectRatio ?? "",
-      settings: body?.settings ?? {},
+      duration: Number(body?.duration ?? 5),
+      aspectRatio: body?.aspectRatio ?? "16:9",
+      settings: body?.settings ?? { duration: Number(body?.duration ?? 5), aspectRatio: body?.aspectRatio ?? "16:9" },
       status: body?.status,
     });
 
