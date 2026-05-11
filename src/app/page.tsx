@@ -40,9 +40,7 @@ const HomePage = () => {
 
           {/* Input Card */}
           <div className="mt-8 w-full max-w-5xl">
-            <div className="rounded-[30px] border border-[#ece8ff] bg-white p-4 shadow-[0_20px_60px_rgba(124,92,255,0.08)]">
-              <InputArea />
-            </div>
+            <InputArea />
           </div>
         </section>
       </div>

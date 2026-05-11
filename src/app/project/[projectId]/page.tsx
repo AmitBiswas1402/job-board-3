@@ -1,4 +1,5 @@
 
+import { listGeneratedVideos } from "@/action/video.action";
 import { getProjectBySlug } from "@/action/project.action";
 import ProjectWorkspaceClient from "@/components/ProjectWorkspaceClient";
 import ChatInterface from "@/components/ChatInterface";
@@ -32,6 +33,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const { projectId } = await params;
   const slug = projectId;
   const project = await getProjectBySlug(String(slug));
+  const videos = project ? await listGeneratedVideos(project.id) : [];
+  const serializedVideos = videos.map(({ createdAt, ...video }) => ({
+    ...video,
+    createdAt: createdAt.toISOString(),
+  }));
 
   return (
     <main className="min-h-screen w-full bg-background">
@@ -202,8 +208,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <h3 className="text-lg font-semibold mb-4">Generated Videos</h3>
               <ProjectWorkspaceClient
                 projectId={project?.id ?? 0}
-                duration={project?.duration}
-                aspectRatio={project?.aspectRatio}
+                projectStatus={project?.status}
+                initialVideos={serializedVideos}
               />
             </div>
           </div>

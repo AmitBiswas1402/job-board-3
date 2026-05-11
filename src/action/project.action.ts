@@ -5,7 +5,7 @@ import { projectTable } from "@/db/schema";
 import { db } from "@/lib/index";
 import { requireAuthenticatedUser } from "@/action/user.action";
 
-type ProjectStatus = "draft" | "active" | "archived";
+type ProjectStatus = "draft" | "pending" | "active" | "archived";
 
 type ProjectInput = {
   title: string;

@@ -11,6 +11,7 @@ import {
 
 export const projectStatusEnum = pgEnum("project_status", [
   "draft",
+  "pending",
   "active",
   "archived",
 ]);
@@ -65,6 +66,11 @@ export const generatedVideoTable = pgTable("generated_videos", {
     .references(() => projectTable.id, { onDelete: "cascade" }),
   url: text("url").notNull(),
   status: generateVideoStatusEnum("status").notNull().default("pending"),
+  progressStep: varchar("progress_step", { length: 64 }).notNull().default("queued"),
+  progressMessage: text("progress_message"),
+  generatedPrompt: text("generated_prompt"),
+  themeConfig: jsonb("theme_config"),
+  compositionCode: text("composition_code"),
   duration: integer("duration").notNull(),
   aspectRation: varchar("aspect_ration", { length: 32 }).notNull(),
   credits: integer("credits").notNull(),

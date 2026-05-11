@@ -23,6 +23,18 @@ type UpdateGeneratedVideoInput = {
   credits?: number;
 };
 
+const generatedVideoColumns = {
+  id: generatedVideoTable.id,
+  projectId: generatedVideoTable.projectId,
+  url: generatedVideoTable.url,
+  status: generatedVideoTable.status,
+  duration: generatedVideoTable.duration,
+  aspectRation: generatedVideoTable.aspectRation,
+  credits: generatedVideoTable.credits,
+  createdAt: generatedVideoTable.createdAt,
+  updatedAt: generatedVideoTable.updatedAt,
+} as const;
+
 async function ensureProjectOwnership(projectId: number, userId: number) {
   const project = await db
     .select()
@@ -64,7 +76,7 @@ export async function listGeneratedVideos(projectId?: number) {
     await ensureProjectOwnership(projectId, user.id);
 
     return await db
-      .select()
+      .select(generatedVideoColumns)
       .from(generatedVideoTable)
       .where(eq(generatedVideoTable.projectId, projectId))
       .orderBy(desc(generatedVideoTable.createdAt));
@@ -81,7 +93,7 @@ export async function listGeneratedVideos(projectId?: number) {
 
   const projectIds = new Set(ownedProjects.map((p) => p.id));
   const allVideos = await db
-    .select()
+    .select(generatedVideoColumns)
     .from(generatedVideoTable)
     .orderBy(desc(generatedVideoTable.createdAt));
 
@@ -95,7 +107,7 @@ export async function updateGeneratedVideo(
   const user = await requireAuthenticatedUser();
 
   const videoRow = await db
-    .select()
+    .select(generatedVideoColumns)
     .from(generatedVideoTable)
     .where(eq(generatedVideoTable.id, videoId))
     .limit(1);
